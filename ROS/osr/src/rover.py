@@ -321,7 +321,7 @@ class Rover(object):
 
         # we know that the linear velocity in x direction is the instantaneous velocity of the middle virtual
         # wheel which spins at the average speed of the two middle outer wheels.
-        drive_angular_velocity = (self.curr_velocities['drive_left_middle'] + self.curr_velocities['drive_right_middle']) / 2.
+        drive_angular_velocity = (self.curr_velocities['drive_left_middle'] - self.curr_velocities['drive_right_middle']) / 2.
         self.curr_twist.twist.linear.x = drive_angular_velocity * self.wheel_radius
         # now calculate angular velocity from its relation with linear velocity and turning radius
         try:
