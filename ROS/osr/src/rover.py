@@ -321,14 +321,15 @@ class Rover(object):
 
         # we know that the linear velocity in x direction is the instantaneous velocity of the middle virtual
         # wheel which spins at the average speed of the two middle outer wheels.
-        drive_angular_velocity = (self.curr_velocities['drive_left_middle'] + self.curr_velocities['drive_right_middle']) / 2.
+        # Changed sign to minus as left and riight wheels have inverse signs on their velocities
+        drive_angular_velocity = (self.curr_velocities['drive_left_middle'] - self.curr_velocities['drive_right_middle']) / 2.
         self.curr_twist.twist.linear.x = drive_angular_velocity * self.wheel_radius
         # now calculate angular velocity from its relation with linear velocity and turning radius
         try:
             self.curr_twist.twist.angular.z = self.curr_twist.twist.linear.x / self.curr_turning_radius
         except ZeroDivisionError:
             rospy.logwarn_throttle(1, "Current turning radius was calculated as zero which"
-                                   "is an illegal value. Check your wheel calibration."
+                                   "is an illegal value. Check your wheel calibration.")
             self.curr_twist.twist.angular.z = 0.  # turning in place is currently unsupported
 
 
